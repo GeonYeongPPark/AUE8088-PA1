@@ -1,0 +1,43 @@
+method: bayes
+metric:
+  goal: maximize
+  name: F1score/train
+parameters:
+  model_name:
+    distribution: categorical
+    values:
+      - resnet18
+      - alexnet
+      - resnet50
+      - MyNetwork
+      - SOTA
+  optimizer_params:
+    parameters:
+      lr:
+        distribution: uniform
+        max: 0.01
+        min: 0.0025
+      momentum:
+        distribution: uniform
+        max: 1.8
+        min: 0.45
+      type:
+        distribution: categorical
+        values:
+          - SGD
+          - AdamW
+          - Adam
+  scheduler_params:
+    parameters:
+      gamma:
+        distribution: uniform
+        max: 0.4
+        min: 0.1
+      type:
+        distribution: categorical
+        values:
+          - MultiStepLR
+program: train.py
+
+
+

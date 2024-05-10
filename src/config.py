@@ -22,7 +22,11 @@ IMAGE_MEAN          = [0.4802, 0.4481, 0.3975]
 IMAGE_STD           = [0.2302, 0.2265, 0.2262]
 
 # Network
-MODEL_NAME          = 'resnet18'
+# MODEL_NAME          = 'resnet18'
+# MODEL_NAME          = 'resnet50'
+# MODEL_NAME          = 'alexnet'
+# MODEL_NAME          = 'MyNetwork'
+MODEL_NAME          = 'SOTA'
 
 # Compute related
 ACCELERATOR         = 'gpu'
@@ -30,7 +34,7 @@ DEVICES             = [0]
 PRECISION_STR       = '32-true'
 
 # Logging
-WANDB_PROJECT       = 'aue8088-pa1'
+WANDB_PROJECT       = 'PA1'
 WANDB_ENTITY        = os.environ.get('WANDB_ENTITY')
 WANDB_SAVE_DIR      = 'wandb/'
 WANDB_IMG_LOG_FREQ  = 50

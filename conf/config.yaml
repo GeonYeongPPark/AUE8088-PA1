@@ -1,0 +1,5 @@
+defaults:
+  - optimizer: adam
+  - model: basic_model
+
+lr: 0.005

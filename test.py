@@ -4,7 +4,6 @@
 """
 # Python packages
 import argparse
-
 # PyTorch & Pytorch Lightning
 from lightning import Trainer
 from torch.utils.flop_counter import FlopCounterMode
@@ -44,7 +43,7 @@ if __name__ == "__main__":
     )
 
     trainer.validate(model, ckpt_path = args.ckpt_file, datamodule = datamodule)
-
+    
     # FLOP counter
     x, y = next(iter(datamodule.test_dataloader()))
     flop_counter = FlopCounterMode(model, depth=1)

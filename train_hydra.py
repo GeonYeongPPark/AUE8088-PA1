@@ -16,14 +16,20 @@ import src.config as cfg
 
 torch.set_float32_matmul_precision('medium')
 
-
-if __name__ == "__main__":
+import hydra
+@hydra.main(config_path='conf', config_name='config')
+def main(cfg_h):
+    # {'type': 'SGD', 'lr': 0.005, 'momentum': 0.9}
+    optimizer_type = cfg_h.optimizer.type
+    learning_rate = cfg_h.lr
     
+
     model = SimpleClassifier(
-        model_name = cfg.MODEL_NAME,
-        num_classes = cfg.NUM_CLASSES,
-        optimizer_params = cfg.OPTIMIZER_PARAMS,
-        scheduler_params = cfg.SCHEDULER_PARAMS,
+    model_name = cfg_h.model.name,
+    num_classes = cfg.NUM_CLASSES,
+    # optimizer_params = cfg.OPTIMIZER_PARAMS,
+    optimizer_params = {'type':optimizer_type,'lr':learning_rate},
+    scheduler_params = cfg.SCHEDULER_PARAMS,
     )
 
     datamodule = TinyImageNetDatasetModule(
@@ -52,3 +58,7 @@ if __name__ == "__main__":
 
     trainer.fit(model, datamodule=datamodule)
     trainer.validate(ckpt_path='best', datamodule=datamodule)
+if __name__ == "__main__":
+    main()
+    
+
