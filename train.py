@@ -18,7 +18,7 @@ torch.set_float32_matmul_precision('medium')
 
 
 if __name__ == "__main__":
-    
+
     model = SimpleClassifier(
         model_name = cfg.MODEL_NAME,
         num_classes = cfg.NUM_CLASSES,
@@ -29,7 +29,7 @@ if __name__ == "__main__":
     datamodule = TinyImageNetDatasetModule(
         batch_size = cfg.BATCH_SIZE,
     )
-    
+
     wandb_logger = WandbLogger(
         project = cfg.WANDB_PROJECT,
         save_dir = cfg.WANDB_SAVE_DIR,
