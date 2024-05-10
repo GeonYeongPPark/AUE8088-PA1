@@ -3,6 +3,9 @@
         - To run: (aue8088) $ python train.py
         - For better flexibility, consider using LightningCLI in PyTorch Lightning
 """
+import os
+import hydra
+from omegaconf import DictConfig
 # PyTorch & Pytorch Lightning
 from lightning.pytorch.loggers.wandb import WandbLogger
 from lightning.pytorch.callbacks import LearningRateMonitor, ModelCheckpoint
@@ -12,30 +15,28 @@ import torch
 # Custom packages
 from src.dataset import TinyImageNetDatasetModule
 from src.network import SimpleClassifier
-import src.config as cfg
+
 
 torch.set_float32_matmul_precision('medium')
 
-import hydra
-@hydra.main(config_path='conf', config_name='config')
-def main(cfg_h):
-    # {'type': 'SGD', 'lr': 0.005, 'momentum': 0.9}
-    optimizer_type = cfg_h.optimizer.type
-    learning_rate = cfg_h.lr
-    
+@hydra.main(config_path='conf', config_name='config.yaml')
 
+def main(cfg: DictConfig):
+    cfg.WANDB_ENTITY = os.environ.get('WANDB_ENTITY')
+    cfg.WANDB_NAME = f'{cfg.MODEL_NAME}-B{cfg.BATCH_SIZE}-{cfg.OPTIMIZER_PARAMS["type"]}'
+    cfg.WANDB_NAME += f'-{cfg.SCHEDULER_PARAMS["type"]}{cfg.OPTIMIZER_PARAMS["lr"]:.1E}'
+    
     model = SimpleClassifier(
-    model_name = cfg_h.model.name,
-    num_classes = cfg.NUM_CLASSES,
-    # optimizer_params = cfg.OPTIMIZER_PARAMS,
-    optimizer_params = {'type':optimizer_type,'lr':learning_rate},
-    scheduler_params = cfg.SCHEDULER_PARAMS,
+        model_name = cfg.MODEL_NAME,
+        num_classes = cfg.NUM_CLASSES,
+        optimizer_params = cfg.OPTIMIZER_PARAMS,
+        scheduler_params = cfg.SCHEDULER_PARAMS,
     )
 
     datamodule = TinyImageNetDatasetModule(
         batch_size = cfg.BATCH_SIZE,
     )
-    
+
     wandb_logger = WandbLogger(
         project = cfg.WANDB_PROJECT,
         save_dir = cfg.WANDB_SAVE_DIR,
@@ -58,7 +59,8 @@ def main(cfg_h):
 
     trainer.fit(model, datamodule=datamodule)
     trainer.validate(ckpt_path='best', datamodule=datamodule)
-if __name__ == "__main__":
+
+if __name__=="__main__":
     main()
     
 

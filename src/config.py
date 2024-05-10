@@ -26,7 +26,8 @@ IMAGE_STD           = [0.2302, 0.2265, 0.2262]
 # MODEL_NAME          = 'resnet50'
 # MODEL_NAME          = 'alexnet'
 # MODEL_NAME          = 'MyNetwork'
-MODEL_NAME          = 'SOTA'
+MODEL_NAME          = 'DenseNet'
+# MODEL_NAME          = 'SOTA'
 
 # Compute related
 ACCELERATOR         = 'gpu'

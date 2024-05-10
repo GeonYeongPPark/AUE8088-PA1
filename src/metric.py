@@ -30,7 +30,7 @@ class MyF1Score(Metric):
         recall = self.true_positives / (self.true_positives + self.false_negatives + eps)
         f1_score = 2 * (precision * recall) / (precision + recall + eps)
         
-        return torch.mean(f1_score)
+        return f1_score
 
 class MyAccuracy(Metric):
     def __init__(self):
